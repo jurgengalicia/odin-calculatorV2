@@ -17,8 +17,9 @@ body{
 }
 
 button{
-    width:100px;
-    height:100px;
+    width:120px;
+    height:120px;
+    font-size:40px
 }
 
 .view-port{
@@ -30,6 +31,7 @@ button{
 .calculator-body{
     height:60vh;
     width:60vw;
+    gap:30px;
     display:flex;
     flex-direction:column;
     
@@ -40,6 +42,9 @@ button{
 
 .calculator-buttons{
     height:800px;
-    width:800px;
+    width:600px;
     display:flex;
+    justify-content:space-between;
+    flex-flow: row wrap;
+
 }

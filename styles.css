@@ -5,7 +5,7 @@
     font-family: 'Montserrat', sans-serif;
     background-color: black;
     color: white;
-    /* border: 1px solid red; */
+    border: 1px solid red;
 }
 
 body{
@@ -16,21 +16,33 @@ body{
     width:100vw;
 }
 
-button{
-    width:120px;
-    height:120px;
+.buttons-port button{
+    width:3.9em;
+    height:3.9em;
     font-size:40px
 }
 
 .view-port{
-    width:600px;
-    height:200px;
+    width:40em;
+    height:12em;
+    background-color:white;
+}
+.clear-container{
     background-color:white;
 }
 
+.clear-container button{
+    width:11.9em;
+    background-color:white;
+}
+
+.left-quadrant{
+    width:30em;
+}
+
 .calculator-body{
-    height:60vh;
-    width:60vw;
+    height:70vh;
+    width:30vw;
     gap:30px;
     display:flex;
     flex-direction:column;
@@ -39,12 +51,18 @@ button{
     align-items:center;
     
 }
+.buttons-port{
+    gap:30px;
+    display:flex;
+}
 
 .calculator-buttons{
-    height:800px;
-    width:600px;
     display:flex;
     justify-content:space-between;
     flex-flow: row wrap;
-
 }
+.calculator-ops{
+    display:flex;
+    flex-direction:column;
+}
+

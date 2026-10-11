@@ -5,7 +5,7 @@
     font-family: 'Montserrat', sans-serif;
     background-color: black;
     color: white;
-    border: 1px solid red;
+    /* border: 1px solid red; */
 }
 
 body{
@@ -29,15 +29,22 @@ body{
 }
 .clear-container{
     background-color:white;
+    display:flex;
+    justify-content:center;
 }
 
 .clear-container button{
-    width:11.9em;
-    background-color:white;
+    flex-grow:1;   
+}
+
+.calculator-buttons button{
+    flex-grow:1;   
 }
 
 .left-quadrant{
-    width:30em;
+    display:flex;
+    width: 30em;
+    flex-direction:column
 }
 
 .calculator-body{
@@ -52,7 +59,6 @@ body{
     
 }
 .buttons-port{
-    gap:30px;
     display:flex;
 }
 

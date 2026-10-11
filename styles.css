@@ -23,9 +23,16 @@ body{
 }
 
 .view-port{
-    width:40em;
-    height:12em;
+    width:9em;
+    height:2em;
     background-color:white;
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:80px;
+    display:flex;
+    justify-content:flex-end;
+    align-items:flex-end;
+    color:black;
+    padding:20px;
 }
 .clear-container{
     background-color:white;
@@ -48,15 +55,14 @@ body{
 }
 
 .calculator-body{
-    height:70vh;
-    width:30vw;
-    gap:30px;
+    height:70em;
+    width:50em;
     display:flex;
     flex-direction:column;
-    
     justify-content:space-around;
-    align-items:center;
-    
+    align-items:center;  
+    background-color:red;
+    border-radius: 25px;
 }
 .buttons-port{
     display:flex;

@@ -1,6 +1,11 @@
 let num1 = 0;
 let operator = "";
 let num2 = 0;
+let buttonHash = {};
+let buttonElements = document.querySelectorAll("button")
+let calculatorScreen = document.querySelectorAll(".view-port")
+
+
 
 let operate = function(n1, op, n2){
 	switch(op) {

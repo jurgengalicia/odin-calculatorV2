@@ -4,8 +4,18 @@ let sign = "+"
 
 let buttonHash = {};
 let buttonElements = document.querySelectorAll(".calculator-buttons button")
+let opElements = document.querySelectorAll(".calculator-ops button")
 let queuedNum = document.querySelector(".queued-num")
+let clearBtn = document.querySelector(".clear-container button")
 let liveNum = document.querySelector(".live-num")
+
+clearBtn.addEventListener("click" ,() =>{
+	numbers1 = [0];
+	operator = "";
+	sign = "+";
+	liveNum.textContent = "0";
+	queuedNum.textContent = "";
+})
 
 
 
@@ -17,7 +27,6 @@ buttonElements.forEach((btn) => {
 		} else {
 			liveNum.textContent = liveCurrent + e.target.textContent;
 		}
-		
 	})
 })
 

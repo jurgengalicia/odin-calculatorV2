@@ -1,25 +1,42 @@
-let num1 = 0;
+let numbers1 = [0,0];
 let operator = "";
-let num2 = 0;
+let sign = "+"
+
 let buttonHash = {};
-let buttonElements = document.querySelectorAll("button")
-let calculatorScreen = document.querySelectorAll(".view-port")
+let buttonElements = document.querySelectorAll(".calculator-buttons button")
+let queuedNum = document.querySelector(".queued-num")
+let liveNum = document.querySelector(".live-num")
+
+
+
+buttonElements.forEach((btn) => {
+	btn.addEventListener("click", (e) => {
+		let liveCurrent = liveNum.textContent
+		if(liveNum.textContent == "0"){
+			liveNum.textContent = e.target.textContent;
+		} else {
+			liveNum.textContent = liveCurrent + e.target.textContent;
+		}
+		
+	})
+})
+
 
 
 
 let operate = function(n1, op, n2){
 	switch(op) {
-	case 1:
-		return add(n1,n2);
-	case 2:
-		return subtract(n1,n2);
-	case 3:
-		return multiply(n1,n2);
-	case 4:
-		return divide(n1,n2);
-  default:
-	  return 0;
-} 
+		case 1:
+			return add(n1,n2);
+		case 2:
+			return subtract(n1,n2);
+		case 3:
+			return multiply(n1,n2);
+		case 4:
+			return divide(n1,n2);
+		default:
+			return 0;
+	} 
 }
 
 let add = function(a,b){return a + b;}

@@ -28,6 +28,17 @@ button{
     height:3.9em;
     font-size:40px
 }
+.top-view{
+    display:flex;
+    gap:12px;
+    height:1em;
+}
+.queued-num{
+    font-size:32px;
+}
+.op-disp{
+    font-size:32px;
+}
 
 .view-port{
     width:8em;
@@ -50,9 +61,6 @@ button{
     color:black;
 }
 
-.queued-num{
-    font-size:32px;
-}
 
 
 .clear-container{

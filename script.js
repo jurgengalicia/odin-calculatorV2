@@ -1,13 +1,24 @@
 let numbers1 = ["0","0"];
 let operator = "";
-let sign = "+"
+let operatorDisp = "";
+let sign = "+";
+let viewPartialCLear = function(){
+	assignTextContent(liveNumDisp,"");
+	assignTextContent(eqDisp,"");
+}
 let clearCalculator = function(){
 	numbers1 = ["0","0"];
 	operator = "";
 	sign = "+";
-	liveNum.textContent = "0";
-	queuedNum.textContent = "";
-	opDisp.textContent = "";
+	assignTextContent(liveNum,"0");
+	assignTextContent(queuedNum,"");
+	assignTextContent(opDisp,"");
+	viewPartialCLear();
+}
+
+
+let assignTextContent = function(elem, content){
+	elem.textContent = content;
 }
 
 let buttonElements = document.querySelectorAll(".calculator-buttons button")
@@ -16,13 +27,16 @@ let clearBtn = document.querySelector(".clear-container button")
 let liveNum = document.querySelector(".live-num")
 let queuedNum = document.querySelector(".queued-num")
 let opDisp = document.querySelector(".op-disp")
+let eqDisp = document.querySelector(".eq-disp")
+let liveNumDisp = document.querySelector(".live-num-disp")
 
 let add = function(a,b){return a + b;}
 let subtract = function(a,b){return a - b;}
 let multiply = function(a,b){return a * b;}
 let divide = function(a,b){
 	if(b === 0){
-		return "cannot divide by zero"
+		clearCalculator();
+		return "cannot divide by zero";
 	}
 	return a / b;
 }
@@ -39,16 +53,23 @@ clearBtn.addEventListener("click" ,clearCalculator)
 
 opElements.forEach((btn) => {
 	btn.addEventListener("click", (e) => {
-		if(e.target.textContent === "="){
-			let numResult = operator(numbers1[0],numbers1[1]);
-			liveNum.textContent = numResult;
+		if(e.target.textContent === "=" && operator){
+			let numResult = operator(Number(numbers1[0]),Number(numbers1[1]));
+			assignTextContent(liveNum,numResult);
+			assignTextContent(liveNumDisp,numbers1[0]);
+			assignTextContent(eqDisp,"=");
 			numbers1 = [String(numResult), '0'];
-		} else {
+			console.log(numbers1);
+		} else if(e.target.textContent !== "="){
+			if(eqDisp){
+				viewPartialCLear();
+			}
 			operator = opHash[e.target.textContent];
-			queuedNum.textContent = numbers1[0];
-			opDisp.textContent = e.target.textContent;
-			numbers1[1] = numbers1[0] = 0;
-			liveNum.textContent = "0";
+			assignTextContent(queuedNum, numbers1[0]);
+			assignTextContent(opDisp, e.target.textContent);
+			assignTextContent(liveNum, "0");
+			numbers1[1] = numbers1[0];
+			numbers1[0] = 0;
 		}
 		
 	})
@@ -67,7 +88,6 @@ buttonElements.forEach((btn) => {
 				liveNum.textContent = liveCurrent + e.target.textContent;
 			}
 		}
-		
 		numbers1[0] = liveNum.textContent;
 		console.log(numbers1);
 	})

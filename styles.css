@@ -9,7 +9,7 @@
     font-family: 'Montserrat', sans-serif;
     background-color: black;
     color: white;
-    /* border: 1px solid red; */
+    border: 1px solid red;
 }
 
 body{
@@ -30,15 +30,14 @@ button{
 }
 .top-view{
     display:flex;
-    gap:12px;
+    gap:8px;
     height:1em;
 }
-.queued-num{
+
+.top-view div{
     font-size:32px;
 }
-.op-disp{
-    font-size:32px;
-}
+
 
 .view-port{
     width:8em;

@@ -2,6 +2,7 @@
 // operations with decimals
 // operations with negative
 let numbersQueue = ["0","0"];
+let numpadKeys = ["Numpad1","Numpad2","Numpad3","Numpad4","Numpad5","Numpad6","Numpad7","Numpad8","Numpad9","Numpad0",];
 let operator = "";
 let operatorDisp = "";
 let lastEquals = 0;
@@ -15,7 +16,8 @@ let clearCalculator = function(){
 	numbersQueue = ["0","0"];
 	operator = "";
 	sign = "+";
-	lastEquals = 0
+	lastEquals = 0;
+	lastOp = 0;
 	assignTextContent(liveNum,"0");
 	assignTextContent(queuedNum,"");
 	assignTextContent(opDisp,"");
@@ -27,6 +29,7 @@ let assignTextContent = function(elem, content){
 	elem.textContent = content;
 }
 
+let pageElement = document.querySelector("body")
 let buttonElements = document.querySelectorAll(".calculator-buttons button")
 let opElements = document.querySelectorAll(".calculator-ops button")
 let clearBtn = document.querySelector(".clear-container button")
@@ -42,7 +45,7 @@ let multiply = function(a,b){return a * b;}
 let divide = function(a,b){
 	if(b === 0){
 		clearCalculator();
-		return "cannot divide by zero";
+		return "no div by zero";
 	}
 	let result = a/b;
 	let resultString = String(result);
@@ -62,6 +65,27 @@ let opHash = {
 
 let runOperation = function(){
 	return operator(Number(numbersQueue.pop()),Number(numbersQueue.pop()));
+}
+
+let numberOperation = function(inputType, keyOrButton){
+	if(lastEquals){
+		clearCalculator();
+	}
+	let liveCurrent = liveNum.textContent
+	if(e.target.textContent === "+/-"){
+		liveNum.textContent = sign === '+' ? "-"+liveCurrent : liveCurrent.slice(1);
+		sign = sign === '+' ? "-" : "+";
+	} else if(e.target.textContent === "." && liveNum.textContent.includes(".")){
+		let doNothingHere = "";
+	} else {
+		if(liveNum.textContent == "0"){
+			liveNum.textContent = e.target.textContent;
+		} else {
+			liveNum.textContent = liveCurrent + e.target.textContent;
+		}
+	}
+	numbersQueue[0] = liveNum.textContent;
+	lastOp = 0;
 }
 
 clearBtn.addEventListener("click" ,clearCalculator)
@@ -151,3 +175,25 @@ buttonElements.forEach((btn) => {
 		lastOp = 0;
 	})
 })
+
+const input = document.querySelector("input");
+const log = document.getElementById("log");
+
+pageElement.addEventListener("keydown", (e) =>{
+	let keyPressed = e.code;
+	if(numpadKeys.includes(keyPressed)){
+		let numPressed = keyPressed.slice(-1)
+		if(lastEquals){
+			clearCalculator();
+		}
+		let liveCurrent = liveNum.textContent
+		if(liveNum.textContent == "0"){
+			liveNum.textContent = numPressed;
+		} else {
+			liveNum.textContent = liveCurrent + numPressed;
+		}
+		numbersQueue[0] = liveNum.textContent;
+		lastOp = 0;
+	}
+});
+

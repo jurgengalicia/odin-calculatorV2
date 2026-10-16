@@ -1,15 +1,20 @@
-let numbers1 = ["0","0"];
+// still need continuous operation
+// operations with decimals
+// operations with negative
+let numbersQueue = ["0","0"];
 let operator = "";
 let operatorDisp = "";
+let lastEquals = 0
 let sign = "+";
 let viewPartialCLear = function(){
 	assignTextContent(liveNumDisp,"");
 	assignTextContent(eqDisp,"");
 }
 let clearCalculator = function(){
-	numbers1 = ["0","0"];
+	numbersQueue = ["0","0"];
 	operator = "";
 	sign = "+";
+	lastEquals = 0
 	assignTextContent(liveNum,"0");
 	assignTextContent(queuedNum,"");
 	assignTextContent(opDisp,"");
@@ -44,8 +49,12 @@ let divide = function(a,b){
 let opHash = {
 	'+':add,
 	'-':subtract,
-	'&times;':multiply,
-	'&div;':divide,
+	'×':multiply,
+	'÷':divide,
+}
+
+let runOperation = function(){
+	return operator(Number(numbersQueue.pop()),Number(numbersQueue.pop()));
 }
 
 clearBtn.addEventListener("click" ,clearCalculator)
@@ -53,23 +62,54 @@ clearBtn.addEventListener("click" ,clearCalculator)
 
 opElements.forEach((btn) => {
 	btn.addEventListener("click", (e) => {
-		if(e.target.textContent === "=" && operator){
-			let numResult = operator(Number(numbers1[0]),Number(numbers1[1]));
+		console.log(e.target.textContent)
+		if(e.target.textContent !== "=" && operator){
+			if(eqDisp){
+				viewPartialCLear();
+			}
+			let numResult = runOperation();
+			assignTextContent(queuedNum, String(numResult));
+			assignTextContent(liveNum,"0");
+			assignTextContent(liveNumDisp,"");
+
+			operator = opHash[e.target.textContent];
+			
+			assignTextContent(opDisp, e.target.textContent);
+			numbersQueue[0] = "0";
+			numbersQueue[1] = String(numResult);
+		}else if(e.target.textContent === "=" && operator){
+			if(lastEquals == 0){
+				lastEquals = 1;
+			}
+			let secondNum = numbersQueue[0];
+			let numResult = runOperation();
 			assignTextContent(liveNum,numResult);
-			assignTextContent(liveNumDisp,numbers1[0]);
+			assignTextContent(liveNumDisp,secondNum);
 			assignTextContent(eqDisp,"=");
-			numbers1 = [String(numResult), '0'];
-			console.log(numbers1);
-		} else if(e.target.textContent !== "="){
+			operator = "";
+			numbersQueue = ["0", String(numResult)];
+		} else if (e.target.textContent !== "=" && lastEquals){
+			let lastNum = numbersQueue[1]
+			lastEquals = 0
 			if(eqDisp){
 				viewPartialCLear();
 			}
 			operator = opHash[e.target.textContent];
-			assignTextContent(queuedNum, numbers1[0]);
+			assignTextContent(queuedNum, lastNum);
 			assignTextContent(opDisp, e.target.textContent);
 			assignTextContent(liveNum, "0");
-			numbers1[1] = numbers1[0];
-			numbers1[0] = 0;
+			numbersQueue[1] = lastNum;
+			numbersQueue[0] = "0";
+		} else if (e.target.textContent !== "="){
+			if(eqDisp){
+				viewPartialCLear();
+			}
+			operator = opHash[e.target.textContent];
+			assignTextContent(queuedNum, numbersQueue[0]);
+			assignTextContent(opDisp, e.target.textContent);
+			assignTextContent(liveNum, "0");
+			numbersQueue[1] = numbersQueue[0];
+			numbersQueue[0] = "0";
 		}
 		
 	})
@@ -77,10 +117,15 @@ opElements.forEach((btn) => {
 
 buttonElements.forEach((btn) => {
 	btn.addEventListener("click", (e) => {
+		if(lastEquals){
+			clearCalculator();
+		}
 		let liveCurrent = liveNum.textContent
 		if(e.target.textContent === "+/-"){
 			liveNum.textContent = sign === '+' ? "-"+liveCurrent : liveCurrent.slice(1);
 			sign = sign === '+' ? "-" : "+";
+		} else if(e.target.textContent === "." && liveNum.textContent.includes(".")){
+			let doNothingHere = "";
 		} else {
 			if(liveNum.textContent == "0"){
 				liveNum.textContent = e.target.textContent;
@@ -88,7 +133,7 @@ buttonElements.forEach((btn) => {
 				liveNum.textContent = liveCurrent + e.target.textContent;
 			}
 		}
-		numbers1[0] = liveNum.textContent;
-		console.log(numbers1);
+		numbersQueue[0] = liveNum.textContent;
+		console.log(numbersQueue);
 	})
 })

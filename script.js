@@ -4,7 +4,8 @@
 let numbersQueue = ["0","0"];
 let operator = "";
 let operatorDisp = "";
-let lastEquals = 0
+let lastEquals = 0;
+let lastOp = 0;
 let sign = "+";
 let viewPartialCLear = function(){
 	assignTextContent(liveNumDisp,"");
@@ -43,7 +44,13 @@ let divide = function(a,b){
 		clearCalculator();
 		return "cannot divide by zero";
 	}
-	return a / b;
+	let result = a/b;
+	let resultString = String(result);
+	if(resultString.includes(".") && resultString.slice(resultString.indexOf(".")+1).length > 3){
+		return result.toFixed(4)
+	}
+	
+	return result;
 }
 
 let opHash = {
@@ -62,8 +69,8 @@ clearBtn.addEventListener("click" ,clearCalculator)
 
 opElements.forEach((btn) => {
 	btn.addEventListener("click", (e) => {
-		console.log(e.target.textContent)
-		if(e.target.textContent !== "=" && operator){
+		if(e.target.textContent !== "=" && operator && !lastOp){
+			lastOp = 1
 			if(eqDisp){
 				viewPartialCLear();
 			}
@@ -77,7 +84,13 @@ opElements.forEach((btn) => {
 			assignTextContent(opDisp, e.target.textContent);
 			numbersQueue[0] = "0";
 			numbersQueue[1] = String(numResult);
-		}else if(e.target.textContent === "=" && operator){
+		} else if (e.target.textContent !== "=" && lastOp){
+			//if user spams operators
+			lastOp = 1;
+			assignTextContent(opDisp, e.target.textContent);
+			operator = opHash[e.target.textContent];
+		} else if (e.target.textContent === "=" && operator){
+			lastOp = 0
 			if(lastEquals == 0){
 				lastEquals = 1;
 			}
@@ -88,9 +101,10 @@ opElements.forEach((btn) => {
 			assignTextContent(eqDisp,"=");
 			operator = "";
 			numbersQueue = ["0", String(numResult)];
-		} else if (e.target.textContent !== "=" && lastEquals){
+		} else if (e.target.textContent !== "=" && lastEquals && !lastOp){
 			let lastNum = numbersQueue[1]
-			lastEquals = 0
+			lastEquals = 0;
+			lastOp = 1;
 			if(eqDisp){
 				viewPartialCLear();
 			}
@@ -100,7 +114,8 @@ opElements.forEach((btn) => {
 			assignTextContent(liveNum, "0");
 			numbersQueue[1] = lastNum;
 			numbersQueue[0] = "0";
-		} else if (e.target.textContent !== "="){
+		} else if (e.target.textContent !== "=" && !lastOp){
+			lastOp = 1;
 			if(eqDisp){
 				viewPartialCLear();
 			}
@@ -111,7 +126,6 @@ opElements.forEach((btn) => {
 			numbersQueue[1] = numbersQueue[0];
 			numbersQueue[0] = "0";
 		}
-		
 	})
 })
 
@@ -134,6 +148,6 @@ buttonElements.forEach((btn) => {
 			}
 		}
 		numbersQueue[0] = liveNum.textContent;
-		console.log(numbersQueue);
+		lastOp = 0;
 	})
 })

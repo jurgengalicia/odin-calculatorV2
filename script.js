@@ -158,12 +158,12 @@ buttonElements.forEach((btn) => {
 		if(lastEquals){
 			clearCalculator();
 		}
-		let liveCurrent = liveNum.textContent
+		let liveCurrent = liveNum.textContent;
 		if(e.target.textContent === "+/-"){
 			liveNum.textContent = sign === '+' ? "-"+liveCurrent : liveCurrent.slice(1);
 			sign = sign === '+' ? "-" : "+";
 		} else if(e.target.textContent === "." && liveNum.textContent.includes(".")){
-			let doNothingHere = "";
+			return;
 		} else {
 			if(liveNum.textContent == "0"){
 				liveNum.textContent = e.target.textContent;
@@ -180,7 +180,9 @@ const input = document.querySelector("input");
 const log = document.getElementById("log");
 
 pageElement.addEventListener("keydown", (e) =>{
+	console.log(e.code)
 	let keyPressed = e.code;
+	let liveCurrent = liveNum.textContent;
 	if(numpadKeys.includes(keyPressed)){
 		let numPressed = keyPressed.slice(-1)
 		if(lastEquals){
@@ -194,6 +196,23 @@ pageElement.addEventListener("keydown", (e) =>{
 		}
 		numbersQueue[0] = liveNum.textContent;
 		lastOp = 0;
+	} else if (keyPressed === "Backspace"){
+		if(liveCurrent === "0"){
+			return;
+		}else if(liveCurrent.length === 1){
+			liveNum.textContent = "0";
+			numbersQueue[0] = 0;
+		} else {
+			liveNum.textContent = liveCurrent.slice(0,-1);
+			numbersQueue[0] = liveCurrent;
+		}
+	} else if (keyPressed === "NumpadDecimal"){
+		if(liveCurrent.includes(".")){
+			return;
+		} else {
+			liveNum.textContent = liveCurrent+".";
+			numbersQueue[0] = liveNum.textContent;
+		}
 	}
 });
 

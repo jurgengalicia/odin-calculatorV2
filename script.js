@@ -2,7 +2,16 @@
 // operations with decimals
 // operations with negative
 let numbersQueue = ["0","0"];
-let numpadKeys = ["Numpad1","Numpad2","Numpad3","Numpad4","Numpad5","Numpad6","Numpad7","Numpad8","Numpad9","Numpad0",];
+let numpadKeys = ["Numpad1","Numpad2","Numpad3","Numpad4","Numpad5","Numpad6","Numpad7","Numpad8","Numpad9","Numpad0"];
+let numpadOps = ["NumpadDivide", "NumpadMultiply", "NumpadSubtract", "NumpadAdd", "NumpadEnter"];
+let numpadOpsHash = {
+	"NumpadDivide":'÷',
+	"NumpadMultiply":'×',
+	"NumpadSubtract":'-',
+	"NumpadAdd":'+',
+	"NumpadEnter":"=",
+}
+
 let operator = "";
 let operatorDisp = "";
 let lastEquals = 0;
@@ -29,7 +38,7 @@ let assignTextContent = function(elem, content){
 	elem.textContent = content;
 }
 
-let pageElement = document.querySelector("body")
+let bodyElement = document.querySelector("body")
 let buttonElements = document.querySelectorAll(".calculator-buttons button")
 let opElements = document.querySelectorAll(".calculator-ops button")
 let clearBtn = document.querySelector(".clear-container button")
@@ -88,12 +97,8 @@ let numberOperation = function(inputType, keyOrButton){
 	lastOp = 0;
 }
 
-clearBtn.addEventListener("click" ,clearCalculator)
-
-
-opElements.forEach((btn) => {
-	btn.addEventListener("click", (e) => {
-		if(e.target.textContent !== "=" && operator && !lastOp){
+let opFunction = function(inputKey){
+	if(inputKey !== "=" && operator && !lastOp){
 			lastOp = 1
 			if(eqDisp){
 				viewPartialCLear();
@@ -103,53 +108,66 @@ opElements.forEach((btn) => {
 			assignTextContent(liveNum,"0");
 			assignTextContent(liveNumDisp,"");
 
-			operator = opHash[e.target.textContent];
+			operator = opHash[inputKey];
 			
-			assignTextContent(opDisp, e.target.textContent);
+			assignTextContent(opDisp, inputKey);
 			numbersQueue[0] = "0";
 			numbersQueue[1] = String(numResult);
-		} else if (e.target.textContent !== "=" && lastOp){
-			//if user spams operators
-			lastOp = 1;
-			assignTextContent(opDisp, e.target.textContent);
-			operator = opHash[e.target.textContent];
-		} else if (e.target.textContent === "=" && operator){
-			lastOp = 0
-			if(lastEquals == 0){
-				lastEquals = 1;
-			}
-			let secondNum = numbersQueue[0];
-			let numResult = runOperation();
-			assignTextContent(liveNum,numResult);
-			assignTextContent(liveNumDisp,secondNum);
-			assignTextContent(eqDisp,"=");
-			operator = "";
-			numbersQueue = ["0", String(numResult)];
-		} else if (e.target.textContent !== "=" && lastEquals && !lastOp){
-			let lastNum = numbersQueue[1]
-			lastEquals = 0;
-			lastOp = 1;
-			if(eqDisp){
-				viewPartialCLear();
-			}
-			operator = opHash[e.target.textContent];
-			assignTextContent(queuedNum, lastNum);
-			assignTextContent(opDisp, e.target.textContent);
-			assignTextContent(liveNum, "0");
-			numbersQueue[1] = lastNum;
-			numbersQueue[0] = "0";
-		} else if (e.target.textContent !== "=" && !lastOp){
-			lastOp = 1;
-			if(eqDisp){
-				viewPartialCLear();
-			}
-			operator = opHash[e.target.textContent];
-			assignTextContent(queuedNum, numbersQueue[0]);
-			assignTextContent(opDisp, e.target.textContent);
-			assignTextContent(liveNum, "0");
-			numbersQueue[1] = numbersQueue[0];
-			numbersQueue[0] = "0";
+			console.log("if 1")
+	} else if (inputKey !== "=" && lastOp){
+		//if user spams operators
+		lastOp = 1;
+		assignTextContent(opDisp, inputKey);
+		operator = opHash[inputKey];
+		console.log("if 2")
+	} else if (inputKey === "=" && operator){
+		lastOp = 0
+		if(lastEquals == 0){
+			lastEquals = 1;
 		}
+		let secondNum = numbersQueue[0];
+		let numResult = runOperation();
+		assignTextContent(liveNum,numResult);
+		assignTextContent(liveNumDisp,secondNum);
+		assignTextContent(eqDisp,"=");
+		operator = "";
+		numbersQueue = ["0", String(numResult)];
+		console.log("if 3")
+	} else if (inputKey !== "=" && lastEquals && !lastOp){
+		let lastNum = numbersQueue[1]
+		lastEquals = 0;
+		lastOp = 1;
+		if(eqDisp){
+			viewPartialCLear();
+		}
+		operator = opHash[inputKey];
+		assignTextContent(queuedNum, lastNum);
+		assignTextContent(opDisp, inputKey);
+		assignTextContent(liveNum, "0");
+		numbersQueue[1] = lastNum;
+		numbersQueue[0] = "0";
+		console.log("if 4")
+	} else if (inputKey !== "=" && !lastOp){
+		lastOp = 1;
+		if(eqDisp){
+			viewPartialCLear();
+		}
+		operator = opHash[inputKey];
+		assignTextContent(queuedNum, numbersQueue[0]);
+		assignTextContent(opDisp, inputKey);
+		assignTextContent(liveNum, "0");
+		numbersQueue[1] = numbersQueue[0];
+		numbersQueue[0] = "0";
+		console.log("if 5")
+	}
+}
+
+clearBtn.addEventListener("click" ,clearCalculator)
+
+
+opElements.forEach((btn) => {
+	btn.addEventListener("click", (e) => {
+		opFunction(e.target.textContent)
 	})
 })
 
@@ -179,8 +197,7 @@ buttonElements.forEach((btn) => {
 const input = document.querySelector("input");
 const log = document.getElementById("log");
 
-pageElement.addEventListener("keydown", (e) =>{
-	console.log(e.code)
+bodyElement.addEventListener("keydown", (e) =>{
 	let keyPressed = e.code;
 	let liveCurrent = liveNum.textContent;
 	if(numpadKeys.includes(keyPressed)){
@@ -213,6 +230,9 @@ pageElement.addEventListener("keydown", (e) =>{
 			liveNum.textContent = liveCurrent+".";
 			numbersQueue[0] = liveNum.textContent;
 		}
+	} else if (numpadOps.includes(keyPressed)){
+		let pressedDisplay = numpadOpsHash[keyPressed];
+		opFunction(pressedDisplay)
 	}
 });
 

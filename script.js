@@ -113,13 +113,11 @@ let opFunction = function(inputKey){
 			assignTextContent(opDisp, inputKey);
 			numbersQueue[0] = "0";
 			numbersQueue[1] = String(numResult);
-			console.log("if 1")
 	} else if (inputKey !== "=" && lastOp){
 		//if user spams operators
 		lastOp = 1;
 		assignTextContent(opDisp, inputKey);
 		operator = opHash[inputKey];
-		console.log("if 2")
 	} else if (inputKey === "=" && operator){
 		lastOp = 0
 		if(lastEquals == 0){
@@ -132,7 +130,6 @@ let opFunction = function(inputKey){
 		assignTextContent(eqDisp,"=");
 		operator = "";
 		numbersQueue = ["0", String(numResult)];
-		console.log("if 3")
 	} else if (inputKey !== "=" && lastEquals && !lastOp){
 		let lastNum = numbersQueue[1]
 		lastEquals = 0;
@@ -146,7 +143,6 @@ let opFunction = function(inputKey){
 		assignTextContent(liveNum, "0");
 		numbersQueue[1] = lastNum;
 		numbersQueue[0] = "0";
-		console.log("if 4")
 	} else if (inputKey !== "=" && !lastOp){
 		lastOp = 1;
 		if(eqDisp){
@@ -158,7 +154,6 @@ let opFunction = function(inputKey){
 		assignTextContent(liveNum, "0");
 		numbersQueue[1] = numbersQueue[0];
 		numbersQueue[0] = "0";
-		console.log("if 5")
 	}
 }
 
